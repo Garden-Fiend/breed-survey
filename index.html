@@ -2,17 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Match Module 2 - Breed Profiling</title>
   <style>
     body {
       font-family: sans-serif;
       padding: 2rem;
-      max-width: 700px;
+      max-width: 900px;
       margin: auto;
+      background-color: #f9f9f9;
     }
     h2 {
       color: #2196f3;
+      text-align: center;
+    }
+    .breed-section {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      background-color: #fff;
+    }
+    .breed-image {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
     }
     label {
       display: block;
@@ -36,70 +52,121 @@
 <body>
   <h2>Breed Profiling Form</h2>
   <form id="matchForm">
-    <label>Breed:
-      <input type="text" name="breed" required />
-    </label>
 
-    <label>Lifestyle:
-      <select name="lifestyle">
-        <option value="0">Low Activity</option>
-        <option value="1">Moderately Active</option>
-        <option value="2">Very Active</option>
-      </select>
-    </label>
-
-    <label>Living Space:
-      <select name="livingSpace">
-        <option value="0">Just Me</option>
-        <option value="1">Me + Family</option>
-        <option value="2">Me + Other Pets</option>
-        <option value="3">Me + other Pets and Family</option>
-      </select>
-    </label>
-
-    <label>Time Availability:
-      <select name="timeAvailability">
-        <option value="0">Limited Time</option>
-        <option value="1">Part Time</option>
-        <option value="2">Lots of Time</option>
-      </select>
-    </label>
-
-    <label>Experience:
-      <select name="experience">
-        <option value="0">Beginner</option>
-        <option value="1">Intermediate</option>
-        <option value="2">Expert</option>
-      </select>
-    </label>
-
-    <label>Care Capability:
-      <select name="careCapability">
-        <option value="0">Basic Care</option>
-        <option value="1">Moderate Care</option>
-        <option value="2">High Care</option>
-      </select>
-    </label>
-
-    <label>Desired Bond:
-      <select name="desiredBond">
-        <option value="0">Independent</option>
-        <option value="1">Moderate</option>
-        <option value="2">High Bond</option>
-      </select>
-    </label>
-
-    <label>Additional Notes (optional):
-      <textarea name="notes" rows="3"></textarea>
-    </label>
+    <!-- JS will inject breed sections here -->
 
     <button type="submit">Submit</button>
   </form>
-
   <p id="response" style="margin-top: 1rem;"></p>
 
   <script>
+    const breeds = [
+      {
+        name: "Shih Tzu",
+        img: "https://cdn.pixabay.com/photo/2020/04/12/13/50/dog-5032854_960_720.jpg"
+      },
+      {
+        name: "Pug",
+        img: "https://cdn.pixabay.com/photo/2015/04/08/13/13/dog-712152_960_720.jpg"
+      },
+      {
+        name: "Toy Poodle",
+        img: "https://cdn.pixabay.com/photo/2020/01/15/14/57/poodle-4765713_960_720.jpg"
+      },
+      {
+        name: "Labrador Retriever",
+        img: "https://cdn.pixabay.com/photo/2016/02/19/10/00/dog-1209953_960_720.jpg"
+      },
+      {
+        name: "Puspin",
+        img: "https://upload.wikimedia.org/wikipedia/commons/7/79/Puspin.jpg"
+      },
+      {
+        name: "Persian",
+        img: "https://cdn.pixabay.com/photo/2017/09/25/13/12/cat-2785074_960_720.jpg"
+      },
+      {
+        name: "British Shorthair",
+        img: "https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_960_720.jpg"
+      },
+      {
+        name: "Siamese",
+        img: "https://cdn.pixabay.com/photo/2016/11/21/15/46/siamese-cat-1845789_960_720.jpg"
+      },
+      {
+        name: "Maine Coon",
+        img: "https://cdn.pixabay.com/photo/2016/02/10/16/37/cat-1192026_960_720.jpg"
+      }
+    ];
+
     const form = document.getElementById('matchForm');
+
+    breeds.forEach(breed => {
+      const section = document.createElement('div');
+      section.className = 'breed-section';
+      section.innerHTML = `
+        <img src="${breed.img}" class="breed-image" alt="${breed.name}" />
+        <h3>${breed.name}</h3>
+
+        <label>Preferred Lifestyle for a ${breed.name}:
+          <select name="${breed.name}_lifestyle" required>
+            <option value="">-- Select --</option>
+            <option value="0">Low activity lifestyle</option>
+            <option value="1">Moderately Active Lifestyle</option>
+            <option value="2">Very Active Lifestyle</option>
+          </select>
+        </label>
+
+        <label>Living Space for a ${breed.name}:
+          <select name="${breed.name}_livingSpace" required>
+            <option value="">-- Select --</option>
+            <option value="0">Just me</option>
+            <option value="1">Me and other pets</option>
+            <option value="2">Me with family</option>
+            <option value="3">Me with family and other pets</option>
+          </select>
+        </label>
+
+        <label>Time Availability of Owner for a ${breed.name}:
+          <select name="${breed.name}_timeAvailability" required>
+            <option value="">-- Select --</option>
+            <option value="0">Limited Time at Home</option>
+            <option value="1">Sometimes Home</option>
+            <option value="2">Always home</option>
+          </select>
+        </label>
+
+        <label>Experience of Owner for a ${breed.name}:
+          <select name="${breed.name}_experience" required>
+            <option value="">-- Select --</option>
+            <option value="0">Beginner</option>
+            <option value="1">Intermediate</option>
+            <option value="2">Expert</option>
+          </select>
+        </label>
+
+        <label>Care Capability of Owner for a ${breed.name}:
+          <select name="${breed.name}_careCapability" required>
+            <option value="">-- Select --</option>
+            <option value="0">Can handle basic care, prefer minimal grooming</option>
+            <option value="1">Moderate Care, comfortable with regular brushing and baths</option>
+            <option value="2">High care, ready for hands-on grooming and specialized care</option>
+          </select>
+        </label>
+
+        <label>Desired Closeness of an Adopter for a ${breed.name}:
+          <select name="${breed.name}_desiredBond" required>
+            <option value="">-- Select --</option>
+            <option value="0">Just enjoys an independent companion</option>
+            <option value="1">Wants a balanced bond</option>
+            <option value="2">Seek a very affectionate always-by-my-side companion</option>
+          </select>
+        </label>
+      `;
+
+      form.insertBefore(section, form.querySelector('button'));
+    });
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(form);
@@ -107,7 +174,7 @@
       const response = document.getElementById('response');
 
       try {
-        const res = await fetch("https://script.google.com/macros/s/AKfycbyV_nFKMuToZbhNmO4hNO-5eRtZ8i5IIShQyLTAt06dkbvgxSbghi0o0BcBnR5hONXexQ/exec", {
+        await fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "application/json" },
