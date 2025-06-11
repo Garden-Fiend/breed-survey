@@ -2,201 +2,166 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Match Module 2 - Breed Profiling</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Breed Profiling - One by One</title>
   <style>
     body {
       font-family: sans-serif;
-      padding: 2rem;
-      max-width: 900px;
-      margin: auto;
-      background-color: #f9f9f9;
-    }
-    h2 {
-      color: #2196f3;
-      text-align: center;
+      max-width: 600px;
+      margin: 2rem auto;
+      background: #f9f9f9;
+      padding: 1rem;
     }
     .breed-section {
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      background: white;
       padding: 1rem;
-      margin-bottom: 2rem;
-      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ddd;
+      margin-bottom: 1rem;
     }
     .breed-image {
       width: 100%;
       max-height: 200px;
       object-fit: cover;
       border-radius: 8px;
-      margin-bottom: 1rem;
     }
-    label {
-      display: block;
-      margin-top: 1rem;
-    }
-    select, input, textarea {
+    select {
       width: 100%;
+      margin-top: 0.5rem;
       padding: 0.5rem;
-      margin-top: 0.3rem;
     }
     button {
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       padding: 0.7rem 1.2rem;
-      background-color: #2196f3;
+      background: #2196f3;
       color: white;
       border: none;
       cursor: pointer;
     }
+    #response {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h2>Breed Profiling Form</h2>
-  <form id="matchForm">
-
-    <!-- JS will inject breed sections here -->
-
-    <button type="submit">Submit</button>
-  </form>
-  <p id="response" style="margin-top: 1rem;"></p>
+  <h2>Breed Profiling</h2>
+  <div id="formContainer"></div>
+  <p id="response"></p>
 
   <script>
     const breeds = [
-      {
-        name: "Shih Tzu",
-        img: "https://cdn.pixabay.com/photo/2020/04/12/13/50/dog-5032854_960_720.jpg"
-      },
-      {
-        name: "Pug",
-        img: "https://cdn.pixabay.com/photo/2015/04/08/13/13/dog-712152_960_720.jpg"
-      },
-      {
-        name: "Toy Poodle",
-        img: "https://cdn.pixabay.com/photo/2020/01/15/14/57/poodle-4765713_960_720.jpg"
-      },
-      {
-        name: "Labrador Retriever",
-        img: "https://cdn.pixabay.com/photo/2016/02/19/10/00/dog-1209953_960_720.jpg"
-      },
-      {
-        name: "Puspin",
-        img: "https://upload.wikimedia.org/wikipedia/commons/7/79/Puspin.jpg"
-      },
-      {
-        name: "Persian",
-        img: "https://cdn.pixabay.com/photo/2017/09/25/13/12/cat-2785074_960_720.jpg"
-      },
-      {
-        name: "British Shorthair",
-        img: "https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_960_720.jpg"
-      },
-      {
-        name: "Siamese",
-        img: "https://cdn.pixabay.com/photo/2016/11/21/15/46/siamese-cat-1845789_960_720.jpg"
-      },
-      {
-        name: "Maine Coon",
-        img: "https://cdn.pixabay.com/photo/2016/02/10/16/37/cat-1192026_960_720.jpg"
-      }
+      { name: "Shih Tzu", img: "https://cdn.pixabay.com/photo/2020/04/12/13/50/dog-5032854_960_720.jpg" },
+      { name: "Pug", img: "https://cdn.pixabay.com/photo/2015/04/08/13/13/dog-712152_960_720.jpg" },
+      { name: "Toy Poodle", img: "https://cdn.pixabay.com/photo/2020/01/15/14/57/poodle-4765713_960_720.jpg" }
+      // Add more breeds as needed
     ];
 
-    const form = document.getElementById('matchForm');
+    let currentIndex = 0;
 
-    breeds.forEach(breed => {
-      const section = document.createElement('div');
-      section.className = 'breed-section';
-      section.innerHTML = `
-        <img src="${breed.img}" class="breed-image" alt="${breed.name}" />
-        <h3>${breed.name}</h3>
+    const container = document.getElementById('formContainer');
+    const responseText = document.getElementById('response');
 
-        <label>Preferred Lifestyle for a ${breed.name}:
-          <select name="${breed.name}_lifestyle" required>
-            <option value="">-- Select --</option>
-            <option value="0">Low activity lifestyle</option>
-            <option value="1">Moderately Active Lifestyle</option>
-            <option value="2">Very Active Lifestyle</option>
-          </select>
-        </label>
+    function renderForm(index) {
+      const breed = breeds[index];
+      container.innerHTML = `
+        <form id="breedForm">
+          <div class="breed-section">
+            <img src="${breed.img}" class="breed-image" alt="${breed.name}" />
+            <h3>${breed.name}</h3>
 
-        <label>Living Space for a ${breed.name}:
-          <select name="${breed.name}_livingSpace" required>
-            <option value="">-- Select --</option>
-            <option value="0">Just me</option>
-            <option value="1">Me and other pets</option>
-            <option value="2">Me with family</option>
-            <option value="3">Me with family and other pets</option>
-          </select>
-        </label>
+            <label>Lifestyle:
+              <select name="lifestyle" required>
+                <option value="">-- Select --</option>
+                <option value="0">Low activity</option>
+                <option value="1">Moderate</option>
+                <option value="2">Very active</option>
+              </select>
+            </label>
 
-        <label>Time Availability of Owner for a ${breed.name}:
-          <select name="${breed.name}_timeAvailability" required>
-            <option value="">-- Select --</option>
-            <option value="0">Limited Time at Home</option>
-            <option value="1">Sometimes Home</option>
-            <option value="2">Always home</option>
-          </select>
-        </label>
+            <label>Living Space:
+              <select name="livingSpace" required>
+                <option value="">-- Select --</option>
+                <option value="0">Just me</option>
+                <option value="1">Me + pets</option>
+                <option value="2">Me + family</option>
+                <option value="3">Family + pets</option>
+              </select>
+            </label>
 
-        <label>Experience of Owner for a ${breed.name}:
-          <select name="${breed.name}_experience" required>
-            <option value="">-- Select --</option>
-            <option value="0">Beginner</option>
-            <option value="1">Intermediate</option>
-            <option value="2">Expert</option>
-          </select>
-        </label>
+            <label>Time Availability:
+              <select name="timeAvailability" required>
+                <option value="">-- Select --</option>
+                <option value="0">Limited</option>
+                <option value="1">Sometimes home</option>
+                <option value="2">Always home</option>
+              </select>
+            </label>
 
-        <label>Care Capability of Owner for a ${breed.name}:
-          <select name="${breed.name}_careCapability" required>
-            <option value="">-- Select --</option>
-            <option value="0">Can handle basic care, prefer minimal grooming</option>
-            <option value="1">Moderate Care, comfortable with regular brushing and baths</option>
-            <option value="2">High care, ready for hands-on grooming and specialized care</option>
-          </select>
-        </label>
+            <label>Experience:
+              <select name="experience" required>
+                <option value="">-- Select --</option>
+                <option value="0">Beginner</option>
+                <option value="1">Intermediate</option>
+                <option value="2">Expert</option>
+              </select>
+            </label>
 
-        <label>Desired Closeness of an Adopter for a ${breed.name}:
-          <select name="${breed.name}_desiredBond" required>
-            <option value="">-- Select --</option>
-            <option value="0">Just enjoys an independent companion</option>
-            <option value="1">Wants a balanced bond</option>
-            <option value="2">Seek a very affectionate always-by-my-side companion</option>
-          </select>
-        </label>
+            <label>Care Capability:
+              <select name="careCapability" required>
+                <option value="">-- Select --</option>
+                <option value="0">Minimal</option>
+                <option value="1">Moderate</option>
+                <option value="2">High care</option>
+              </select>
+            </label>
+
+            <label>Desired Bond:
+              <select name="desiredBond" required>
+                <option value="">-- Select --</option>
+                <option value="0">Independent</option>
+                <option value="1">Balanced</option>
+                <option value="2">Very affectionate</option>
+              </select>
+            </label>
+
+            <button type="submit">Next</button>
+          </div>
+        </form>
       `;
 
-      form.insertBefore(section, form.querySelector('button'));
-    });
+      document.getElementById('breedForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const values = Object.fromEntries(formData.entries());
+        values.breed = breed.name;
 
- form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const formData = new FormData(form);
-  const entries = Object.fromEntries(formData.entries());
-  const response = document.getElementById('response');
+        try {
+          await fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify([values]) // wrap in array for your existing Apps Script
+          });
+          responseText.textContent = `✅ Submitted ${breed.name}`;
+        } catch (err) {
+          responseText.textContent = `❌ Failed to submit ${breed.name}`;
+        }
 
-  // Step 1: Reformat the entries into grouped breed objects
-  const structuredData = {};
-  Object.entries(entries).forEach(([key, value]) => {
-    const [breed, field] = key.split("_");
-    if (!structuredData[breed]) structuredData[breed] = { breed };
-    structuredData[breed][field] = value;
-  });
+        // Move to next
+        currentIndex++;
+        if (currentIndex < breeds.length) {
+          setTimeout(() => {
+            responseText.textContent = "";
+            renderForm(currentIndex);
+          }, 500);
+        } else {
+          container.innerHTML = `<h3>✅ All breeds submitted. Thank you!</h3>`;
+        }
+      });
+    }
 
-  // Step 2: Convert the object into an array of breed objects
-  const payload = Object.values(structuredData);
-
-  try {
-    await fetch("https://script.google.com/macros/s/AKfycbyfyTVQOw_dS58fxAklpyU1RLniX0Snh_pu3b8hfreNf93NKjQLY80Oxsqo_vUeaPls-A/exec", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    response.textContent = "✅ Submitted successfully!";
-    form.reset();
-  } catch (err) {
-    response.textContent = "❌ Submission failed.";
-  }
-});
-
+    renderForm(currentIndex);
   </script>
 </body>
 </html>
