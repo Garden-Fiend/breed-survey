@@ -79,7 +79,7 @@
     const payload = Object.values(structuredData);
 
     try {
-      const res = await fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec", {
+      const res = await fetch("https://script.google.com/macros/s/AKfycbyV_nFKMuToZbhNmO4hNO-5eRtZ8i5IIShQyLTAt06dkbvgxSbghi0o0BcBnR5hONXexQ/exec", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload), // <-- sending array of objects
