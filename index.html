@@ -52,8 +52,8 @@
       <select name="livingSpace">
         <option value="0">Just Me</option>
         <option value="1">Me + Family</option>
-        <option value="1">Me + Other Pets</option>
-        <option value="2">Me + other Pets and Family</option>
+        <option value="2">Me + Other Pets</option>
+        <option value="3">Me + other Pets and Family</option>
       </select>
     </label>
 
@@ -107,7 +107,7 @@
       const response = document.getElementById('response');
 
       try {
-        const res = await fetch("https://script.google.com/macros/s/AKfycbwOIbrWFAluLGzddR2IpI9rosnJfRoQyzpomuBGif4vrdbB2nQztWZoTRPD_gQaeX0Pww/exec", {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbyV_nFKMuToZbhNmO4hNO-5eRtZ8i5IIShQyLTAt06dkbvgxSbghi0o0BcBnR5hONXexQ/exec", {
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "application/json" },
