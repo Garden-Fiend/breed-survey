@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Match Module 2 - Breed Profiling</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+    }
+    h2 {
+      color: #2196f3;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+    select, input, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.7rem 1.2rem;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Breed Profiling Form</h2>
+  <form id="matchForm">
+    <label>Breed:
+      <input type="text" name="breed" required />
+    </label>
+
+    <label>Lifestyle:
+      <select name="lifestyle">
+        <option value="0">Low Activity</option>
+        <option value="1">Moderately Active</option>
+        <option value="2">Very Active</option>
+      </select>
+    </label>
+
+    <label>Living Space:
+      <select name="livingSpace">
+        <option value="0">Just Me</option>
+        <option value="1a">Me + Family</option>
+        <option value="1b">Me + Other Pets</option>
+        <option value="2">Me + other Pets and Family</option>
+      </select>
+    </label>
+
+    <label>Time Availability:
+      <select name="timeAvailability">
+        <option value="0">Limited Time</option>
+        <option value="1">Part Time</option>
+        <option value="2">Lots of Time</option>
+      </select>
+    </label>
+
+    <label>Experience:
+      <select name="experience">
+        <option value="0">Beginner</option>
+        <option value="1">Intermediate</option>
+        <option value="2">Expert</option>
+      </select>
+    </label>
+
+    <label>Care Capability:
+      <select name="careCapability">
+        <option value="0">Basic Care</option>
+        <option value="1">Moderate Care</option>
+        <option value="2">High Care</option>
+      </select>
+    </label>
+
+    <label>Desired Bond:
+      <select name="desiredBond">
+        <option value="0">Independent</option>
+        <option value="1">Moderate</option>
+        <option value="2">High Bond</option>
+      </select>
+    </label>
+
+    <label>Additional Notes (optional):
+      <textarea name="notes" rows="3"></textarea>
+    </label>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="response" style="margin-top: 1rem;"></p>
+
+  <script>
+    const form = document.getElementById('matchForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const obj = Object.fromEntries(formData.entries());
+      const response = document.getElementById('response');
+
+      try {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbwOIbrWFAluLGzddR2IpI9rosnJfRoQyzpomuBGif4vrdbB2nQztWZoTRPD_gQaeX0Pww/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(obj),
+        });
+        response.textContent = "✅ Submitted successfully!";
+        form.reset();
+      } catch (err) {
+        response.textContent = "❌ Submission failed.";
+      }
+    });
+  </script>
+</body>
+</html>
